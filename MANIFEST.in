@@ -7,4 +7,6 @@ exclude main.py
 recursive-exclude tests *
 recursive-exclude docs *
 recursive-exclude .venv *
-recursive-exclude crewai_serve/__pycache__ *
+recursive-exclude graphtomation_crewai/__pycache__ *
+exclude .pypirc
+exclude twine.py

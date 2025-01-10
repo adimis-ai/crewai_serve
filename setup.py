@@ -6,15 +6,15 @@ with open(requirements_path, "r") as f:
     install_requires = f.read().splitlines()
 
 setup(
-    name="crewai_serve",
+    name="graphtomation_crewai",
     version="0.0.1",
     author="Aditya Mishra",
     author_email="aditya.mishra@adimis.in",
-    description="A FastAPI router to create routes for CrewAI methods",
+    description="A FastAPI router to create routes for CrewAI crew",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     url="https://github.com/dev-adimis/crewai-serve",
-    packages=find_packages(include=["crewai_serve", "crewai_serve.*"]),
+    packages=find_packages(include=["graphtomation_crewai", "graphtomation_crewai.*"]),
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",

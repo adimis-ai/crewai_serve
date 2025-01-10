@@ -1,24 +1,43 @@
-# Crewai Serve
+# Graphtomation Crewai Documentation
+
+## Overview
+
+**Graphtomation Crewai** is a FastAPI-based utility designed to easily integrate and deploy CrewAI functionalities. This package simplifies the process of exposing CrewAI agents, tasks, and workflows as API endpoints, making them accessible over the web.
+
+---
 
 ## Installation
 
+Install the required dependencies for Graphtomation Crewai using the following command:
+
+```bash
+pip install crewai crewai[tools] fastapi[standard]
+```
+
+---
+
 ## Implementation
 
-### tests/example.py
+This section provides an example implementation showcasing how to define a custom tool, create a CrewAI agent and task, and expose them as API endpoints using FastAPI.
 
-```py
+---
+
+### Example Custom Tool: `DuckDuckGoSearchTool`
+
+The `DuckDuckGoSearchTool` is a custom tool that performs web searches using the DuckDuckGo API and retrieves the top results.
+
+#### **Code: `tests/example.py`**
+
+```python
 from typing import Type
 from crewai.tools import BaseTool
 from pydantic import BaseModel, Field
 import requests
 
-
 # Define the input schema for the tool
 class DuckDuckGoSearchInput(BaseModel):
     """Input schema for DuckDuckGoSearchTool."""
-
     query: str = Field(..., description="Search query to look up on DuckDuckGo.")
-
 
 # Create the custom tool by subclassing BaseTool
 class DuckDuckGoSearchTool(BaseTool):
@@ -58,12 +77,23 @@ class DuckDuckGoSearchTool(BaseTool):
 
         except requests.RequestException as e:
             return f"An error occurred while performing the search: {e}"
+```
 
+---
 
+### CrewAI Agent and Task Example
+
+We now define a **CrewAI Agent** with a goal to perform web searches and a corresponding task to search for the latest advancements in AI.
+
+#### **Code (continued): `tests/example.py`**
+
+```python
 from crewai import Agent, Task, Crew
 
+# Create an instance of the DuckDuckGoSearchTool
 ddg_search_tool = DuckDuckGoSearchTool()
 
+# Define the researcher agent
 researcher = Agent(
     role="Web Researcher",
     goal="Perform searches to gather relevant information for tasks.",
@@ -72,12 +102,14 @@ researcher = Agent(
     verbose=True,
 )
 
+# Define a research task
 research_task = Task(
     description="Search for the latest advancements in AI technology.",
     expected_output="A summary of the top 3 advancements in AI technology from recent searches.",
     agent=researcher,
 )
 
+# Create a crew with the researcher and task
 example_crew = Crew(
     agents=[researcher],
     tasks=[research_task],
@@ -86,17 +118,22 @@ example_crew = Crew(
 )
 ```
 
-### main.py
+---
 
-```py
+### FastAPI Integration
+
+We use **Graphtomation Crewai** to expose the `example_crew` as an API endpoint.
+
+#### **Code: `main.py`**
+
+```python
 from fastapi import FastAPI
-from crewai_serve.router import CrewRouter
-
+from graphtomation_crewai.router import CrewRouter
 from tests.example import example_crew
 
 app = FastAPI()
 
-
+# Create the CrewRouter instance with metadata
 crew_router = CrewRouter(
     crews=[
         {
@@ -110,5 +147,14 @@ crew_router = CrewRouter(
     ]
 )
 
+# Include the CrewRouter in the FastAPI app
 app.include_router(crew_router.router, prefix="/crew")
+```
+
+---
+
+## Running the Application
+
+```bash
+fastapi dev main.py
 ```

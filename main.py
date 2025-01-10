@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from crewai_serve.router import CrewRouter
+from graphtomation_crewai import CrewRouter
 
 from tests.example import example_crew
 
