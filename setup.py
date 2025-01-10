@@ -13,7 +13,7 @@ setup(
     description="A FastAPI router to create routes for CrewAI methods",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/adimis-toolbox/crewai-serve",
+    url="https://github.com/dev-adimis/crewai-serve",
     packages=find_packages(include=["crewai_serve", "crewai_serve.*"]),
     classifiers=[
         "Programming Language :: Python :: 3",
